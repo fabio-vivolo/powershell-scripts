@@ -1,0 +1,12 @@
+Import-Module ActiveDirectory
+
+$OutputFile = "C:\temp\utenti_AD.csv"
+
+Get-ADUser -Filter * -Properties Description, whenCreated |
+Select-Object `
+    @{Name="NomeSam";Expression={$_.SamAccountName}},
+    @{Name="Description";Expression={$_.Description}},
+    @{Name="DataCreazione";Expression={$_.whenCreated}} |
+Export-Csv -Path $OutputFile -NoTypeInformation -Encoding UTF8
+
+Write-Host "Esportazione completata: $OutputFile"
